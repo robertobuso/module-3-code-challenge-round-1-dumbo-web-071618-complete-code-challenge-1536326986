@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
     })
 
     likeImage(imageContent.like_count)
+    createComment()
   }
 
   function likeImage(like_count) {
@@ -65,9 +66,45 @@ document.addEventListener('DOMContentLoaded', function() {
       },
       body: JSON.stringify(data)
       })
-      .then(r => r.json())
-      .then(resp => console.log(resp))
-  }
+    }
+
+    function createComment() {
+      const commentForm = document.getElementById('comment_form')
+      const commentInput = document.getElementById('comment_input')
+
+      commentForm.addEventListener('submit', event => {
+          event.preventDefault()
+
+          const newComment = document.createElement('li')
+
+          newComment.innerHTML = commentInput.value
+
+          const commentList = document.getElementById('comments')
+
+          commentList.append(newComment)
+
+          commentInput.value = ''
+
+          const data = {
+            image_id: 82,
+            content: newComment.innerText
+          }
+
+          fetch('https://randopic.herokuapp.com/comments', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+          })
+          .then(r => r.json())
+          .then(res => console.log(res))
+      })
+
+
+    }
+
 
 
 
