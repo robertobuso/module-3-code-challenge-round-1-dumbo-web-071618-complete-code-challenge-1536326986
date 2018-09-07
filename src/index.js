@@ -46,8 +46,29 @@ document.addEventListener('DOMContentLoaded', function() {
     let numberOfLikes = document.getElementById('likes')
 
     numberOfLikes.innerText = like_count
+
+    updateLikes(like_count)
     })
   }
+
+  function updateLikes(like_count) {
+
+    const data = {
+      image_id: 82
+    }
+
+    fetch('https://randopic.herokuapp.com/likes', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+      })
+      .then(r => r.json())
+      .then(resp => console.log(resp))
+  }
+
 
 
 
