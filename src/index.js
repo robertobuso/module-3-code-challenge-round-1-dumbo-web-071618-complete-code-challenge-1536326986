@@ -98,7 +98,6 @@ document.addEventListener('DOMContentLoaded', function() {
             newComment.append(deleteButton)
 
             deleteButton.addEventListener('click', event => {
-
               newComment.parentNode.removeChild(newComment)
               fetch(`https://randopic.herokuapp.com/comments/${persistedComment.id}`, {
                 method: 'DELETE',
