@@ -1,31 +1,22 @@
 document.addEventListener('DOMContentLoaded', function() {
 
   const imageId = 82 //Enter your assigned imageId here
-
   const imageURL = `https://randopic.herokuapp.com/images/${imageId}`
-
   const likeURL = `https://randopic.herokuapp.com/likes/${imageId}`
-
   const commentsURL = `https://randopic.herokuapp.com/comments/`
-
   const imageCard = document.getElementById('image_content')
 
   fetch(imageURL)
   .then(r => r.json())
   .then(imageR => showImageContent(imageR))
 
-
-
   function showImageContent(imageContent) {
     const myImage = document.getElementById('image')
     myImage.src = imageContent.url
-
     const myName = document.getElementById('name')
     myName.innerText = imageContent.name
-
     const myLikes = document.getElementById('likes')
     myLikes.innerText = imageContent.like_count
-
     const commentList = document.getElementById('comments')
 
     imageContent.comments.forEach(comment => {
@@ -53,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function updateLikes(like_count) {
-
     const data = {
       image_id: 82
     }
@@ -81,8 +71,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
           const commentList = document.getElementById('comments')
 
-          commentList.append(newComment)
-
           commentInput.value = ''
 
           const data = {
@@ -99,10 +87,31 @@ document.addEventListener('DOMContentLoaded', function() {
             body: JSON.stringify(data)
           })
           .then(r => r.json())
-          .then(res => console.log(res))
+          .then(persistedComment => {
+
+            const deleteButton = document.createElement('button')
+
+            deleteButton.id = persistedComment.id
+            deleteButton.innerHTML = 'Delete'
+
+            commentList.append(newComment)
+            newComment.append(deleteButton)
+
+            deleteButton.addEventListener('click', event => {
+
+              newComment.parentNode.removeChild(newComment)
+              fetch(`https://randopic.herokuapp.com/comments/${persistedComment.id}`, {
+                method: 'DELETE',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                }
+              })
+              .then(r => r.json())
+              .then (res => console.log(res))
+            })
+          })
       })
-
-
     }
 
 
