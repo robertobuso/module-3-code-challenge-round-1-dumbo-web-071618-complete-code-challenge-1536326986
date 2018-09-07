@@ -14,8 +14,9 @@ document.addEventListener('DOMContentLoaded', function() {
   .then(r => r.json())
   .then(imageR => showImageContent(imageR))
 
+
+
   function showImageContent(imageContent) {
-    console.log(imageContent)
     const myImage = document.getElementById('image')
     myImage.src = imageContent.url
 
@@ -33,9 +34,20 @@ document.addEventListener('DOMContentLoaded', function() {
       commentList.append(nextComment)
     })
 
-
+    likeImage(imageContent.like_count)
   }
 
+  function likeImage(like_count) {
+    const likeButton = document.getElementById('like_button')
+
+    likeButton.addEventListener('click', e => {
+      like_count = like_count + 1
+
+    let numberOfLikes = document.getElementById('likes')
+
+    numberOfLikes.innerText = like_count
+    })
+  }
 
 
 
